@@ -7,58 +7,57 @@
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700&family=Inter:wght@400;500&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
-      --bg: #f5f4f0;
-      --surface: #ffffff;
-      --border: #e2e0d8;
-      --text: #1a1a18;
-      --muted: #6b6960;
-      --hint: #a09d94;
-      --accent: #d85a30;
-      --accent-light: #faece7;
-      --accent-dark: #993c1d;
-      --success: #0f6e56;
-      --success-light: #e1f5ee;
-      --info: #185fa5;
-      --info-light: #e6f1fb;
-      --warning: #854f0b;
-      --warning-light: #faeeda;
-      --danger: #a32d2d;
-      --danger-light: #fcebeb;
-      --radius: 12px;
-      --radius-sm: 8px;
+      --bg: #f5f4f0; --surface: #ffffff; --border: #e2e0d8;
+      --text: #1a1a18; --muted: #6b6960; --hint: #a09d94;
+      --accent: #d85a30; --accent-light: #faece7; --accent-dark: #993c1d;
+      --success: #0f6e56; --success-light: #e1f5ee;
+      --info: #185fa5; --info-light: #e6f1fb;
+      --warning: #854f0b; --warning-light: #faeeda;
+      --danger: #a32d2d; --danger-light: #fcebeb;
+      --radius: 12px; --radius-sm: 8px;
     }
-
     [data-theme="dark"] {
-      --bg: #141412;
-      --surface: #1e1e1b;
-      --border: #2e2e2a;
-      --text: #f0ede8;
-      --muted: #9a9790;
-      --hint: #5a5a55;
-      --accent: #e86a3a;
-      --accent-light: #2a1a12;
-      --accent-dark: #f07a4a;
-      --success: #1d9e75;
-      --success-light: #0a2018;
-      --info: #378add;
-      --info-light: #0a1828;
-      --warning: #ef9f27;
-      --warning-light: #201408;
-      --danger: #e24b4a;
-      --danger-light: #200a0a;
+      --bg: #141412; --surface: #1e1e1b; --border: #2e2e2a;
+      --text: #f0ede8; --muted: #9a9790; --hint: #5a5a55;
+      --accent: #e86a3a; --accent-light: #2a1a12; --accent-dark: #f07a4a;
+      --success: #1d9e75; --success-light: #0a2018;
+      --info: #378add; --info-light: #0a1828;
+      --warning: #ef9f27; --warning-light: #201408;
+      --danger: #e24b4a; --danger-light: #200a0a;
     }
-
     body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; transition: background 0.2s, color 0.2s; }
 
     /* NAV */
-    nav { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 1.5rem; height: 56px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; transition: background 0.2s; }
+    nav { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 1.5rem; height: 56px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
     .nav-logo { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 18px; letter-spacing: -0.02em; }
     .nav-logo span { color: var(--accent); }
     .nav-right { display: flex; align-items: center; gap: 8px; }
-    .dark-btn { background: none; border: 1px solid var(--border); border-radius: 99px; padding: 5px 12px; font-size: 12px; color: var(--muted); cursor: pointer; font-family: 'Inter', sans-serif; transition: border-color 0.15s, color 0.15s; }
-    .dark-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .nav-btn { background: none; border: 1px solid var(--border); border-radius: 99px; padding: 5px 12px; font-size: 12px; color: var(--muted); cursor: pointer; font-family: 'Inter', sans-serif; transition: border-color 0.15s, color 0.15s; white-space: nowrap; }
+    .nav-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .nav-user { font-size: 12px; color: var(--muted); max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+    /* AUTH MODAL */
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 200; display: flex; align-items: center; justify-content: center; padding: 1rem; }
+    .modal-overlay.hidden { display: none; }
+    .modal { background: var(--surface); border-radius: var(--radius); padding: 2rem; width: 100%; max-width: 400px; border: 1px solid var(--border); }
+    .modal h2 { font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 700; margin-bottom: 0.5rem; }
+    .modal p { font-size: 13px; color: var(--muted); margin-bottom: 1.5rem; }
+    .modal-tabs { display: flex; gap: 4px; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border); }
+    .modal-tab { padding: 8px 16px; font-size: 13px; font-weight: 500; color: var(--muted); cursor: pointer; border-bottom: 2px solid transparent; transition: color 0.15s, border-color 0.15s; }
+    .modal-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+    .form-field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 12px; }
+    .form-field label { font-size: 12px; font-weight: 500; color: var(--muted); }
+    .form-field input { border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 10px 12px; font-size: 14px; font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); outline: none; transition: border-color 0.2s; }
+    .form-field input:focus { border-color: var(--accent); }
+    .auth-error { font-size: 12px; color: var(--danger); margin-bottom: 10px; min-height: 16px; }
+    .btn-full { width: 100%; padding: 11px; font-size: 14px; font-weight: 700; font-family: 'Syne', sans-serif; border-radius: var(--radius-sm); border: none; cursor: pointer; transition: background 0.15s; }
+    .btn-accent { background: var(--accent); color: #fff; }
+    .btn-accent:hover { background: var(--accent-dark); }
+    .divider { display: flex; align-items: center; gap: 10px; margin: 14px 0; font-size: 12px; color: var(--hint); }
+    .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+    .btn-google { width: 100%; padding: 10px; font-size: 14px; font-weight: 500; font-family: 'Inter', sans-serif; border-radius: var(--radius-sm); border: 1px solid var(--border); background: var(--surface); color: var(--text); cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: background 0.15s; }
+    .btn-google:hover { background: var(--bg); }
 
     /* TABS */
     .tabs { display: flex; gap: 4px; background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 1.5rem; overflow-x: auto; }
@@ -66,11 +65,10 @@
     .tab:hover { color: var(--text); }
     .tab.active { color: var(--accent); border-bottom-color: var(--accent); }
 
-    /* PAGES */
     .page { display: none; }
     .page.active { display: block; }
 
-    /* SEARCH PAGE */
+    /* HERO / SEARCH */
     .hero { text-align: center; padding: 3.5rem 1.5rem 2rem; max-width: 600px; margin: 0 auto; }
     .hero-eyebrow { font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-bottom: 1rem; }
     .hero h1 { font-family: 'Syne', sans-serif; font-size: clamp(24px, 5vw, 38px); font-weight: 700; letter-spacing: -0.03em; line-height: 1.15; margin-bottom: 0.75rem; }
@@ -105,7 +103,6 @@
     .badge-success { background: var(--success-light); color: var(--success); }
     .badge-warning { background: var(--warning-light); color: var(--warning); }
     .badge-info    { background: var(--info-light); color: var(--info); }
-    .badge-danger  { background: var(--danger-light); color: var(--danger); }
 
     .card-body { padding: 12px 18px; font-size: 13px; color: var(--muted); line-height: 1.6; }
     .card-foot { padding: 12px 18px; display: flex; gap: 8px; flex-wrap: wrap; border-top: 1px solid var(--border); align-items: center; }
@@ -121,7 +118,7 @@
     .empty { text-align: center; padding: 2.5rem 1rem; color: var(--muted); font-size: 14px; }
     .empty-dot { width: 52px; height: 52px; background: var(--accent-light); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; font-size: 24px; }
 
-    /* SECTION WRAPPER */
+    /* SECTION */
     .section { max-width: 600px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
     .section-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 20px; letter-spacing: -0.02em; margin-bottom: 0.4rem; }
     .section-sub { font-size: 13px; color: var(--muted); margin-bottom: 1.5rem; line-height: 1.5; }
@@ -129,9 +126,14 @@
     /* COLLECTION */
     .add-pop-form { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; margin-bottom: 1.5rem; display: flex; flex-direction: column; gap: 10px; }
     .form-row { display: flex; gap: 8px; flex-wrap: wrap; }
-    .form-row input { flex: 1; min-width: 140px; border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 8px 12px; font-size: 13px; font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); outline: none; transition: border-color 0.2s; }
+    .form-row input { flex: 1; min-width: 130px; border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 8px 12px; font-size: 13px; font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); outline: none; transition: border-color 0.2s; }
     .form-row input:focus { border-color: var(--accent); }
     .form-row input::placeholder { color: var(--hint); }
+
+    .collection-summary { background: var(--accent-light); border: 1px solid var(--accent); border-radius: var(--radius); padding: 14px 18px; margin-bottom: 1.5rem; display: flex; gap: 2rem; align-items: center; flex-wrap: wrap; }
+    .summary-stat { text-align: center; }
+    .summary-val { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 22px; color: var(--accent); }
+    .summary-label { font-size: 11px; color: var(--muted); margin-top: 2px; text-transform: uppercase; letter-spacing: 0.05em; }
 
     .collection-grid { display: flex; flex-direction: column; gap: 8px; }
     .pop-item { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px 16px; display: flex; align-items: center; gap: 12px; animation: fadeUp 0.2s ease both; }
@@ -143,11 +145,6 @@
     .pop-actions { display: flex; gap: 6px; }
     .icon-btn { background: none; border: 1px solid var(--border); border-radius: var(--radius-sm); width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 14px; color: var(--muted); transition: border-color 0.15s, color 0.15s; }
     .icon-btn:hover { border-color: var(--danger); color: var(--danger); }
-
-    .collection-summary { background: var(--accent-light); border: 1px solid var(--accent); border-radius: var(--radius); padding: 14px 18px; margin-bottom: 1.5rem; display: flex; gap: 2rem; align-items: center; flex-wrap: wrap; }
-    .summary-stat { text-align: center; }
-    .summary-val { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 22px; color: var(--accent); }
-    .summary-label { font-size: 11px; color: var(--muted); margin-top: 2px; text-transform: uppercase; letter-spacing: 0.05em; }
 
     .empty-collection { text-align: center; padding: 3rem 1rem; color: var(--muted); font-size: 14px; background: var(--surface); border: 1px dashed var(--border); border-radius: var(--radius); }
 
@@ -164,28 +161,63 @@
     .alert-info { flex: 1; }
     .alert-name { font-weight: 500; font-size: 14px; }
     .alert-threshold { font-size: 12px; color: var(--muted); margin-top: 2px; }
-    .alert-check-btn { font-size: 12px; padding: 5px 12px; }
+
+    /* LOGIN PROMPT */
+    .login-prompt { text-align: center; padding: 3rem 1rem; background: var(--surface); border: 1px dashed var(--border); border-radius: var(--radius); }
+    .login-prompt p { font-size: 14px; color: var(--muted); margin-bottom: 1rem; }
 
     footer { text-align: center; padding: 2rem; font-size: 12px; color: var(--hint); border-top: 1px solid var(--border); }
   </style>
 </head>
 <body>
 
+<!-- AUTH MODAL -->
+<div class="modal-overlay hidden" id="authModal">
+  <div class="modal">
+    <h2>Welcome back</h2>
+    <p>Sign in to save your collection and alerts across all your devices.</p>
+    <div class="modal-tabs">
+      <div class="modal-tab active" onclick="switchAuthTab('login')">Sign in</div>
+      <div class="modal-tab" onclick="switchAuthTab('register')">Create account</div>
+    </div>
+    <div id="auth-error" class="auth-error"></div>
+    <div class="form-field">
+      <label>Email</label>
+      <input type="email" id="auth-email" placeholder="you@email.com" />
+    </div>
+    <div class="form-field">
+      <label>Password</label>
+      <input type="password" id="auth-password" placeholder="••••••••" />
+    </div>
+    <button class="btn-full btn-accent" id="auth-submit-btn" onclick="submitAuth()">Sign in</button>
+    <div class="divider">or</div>
+    <button class="btn-google" onclick="signInGoogle()">
+      <svg width="16" height="16" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+      Continue with Google
+    </button>
+    <div style="text-align:center; margin-top:1rem;">
+      <button class="btn btn-sm" onclick="closeModal()" style="border:none; color:var(--hint);">Cancel</button>
+    </div>
+  </div>
+</div>
+
 <nav>
   <div class="nav-logo">Funko<span>Pop</span>PriceSearcher</div>
   <div class="nav-right">
-    <button class="dark-btn" onclick="toggleDark()" id="darkBtn">🌙 Dark mode</button>
+    <button class="nav-btn" onclick="toggleDark()" id="darkBtn">🌙 Dark</button>
+    <span class="nav-user" id="nav-user-email" style="display:none;"></span>
+    <button class="nav-btn" id="auth-nav-btn" onclick="openModal()">Sign in</button>
   </div>
 </nav>
 
 <div class="tabs">
   <div class="tab active" onclick="showTab('search')">🔍 Search</div>
-  <div class="tab" onclick="showTab('collection')">📦 My Collection</div>
+  <div class="tab" onclick="showTab('collection')">📦 Collection</div>
   <div class="tab" onclick="showTab('scanner')">📷 Scanner</div>
-  <div class="tab" onclick="showTab('alerts')">🔔 Price Alerts</div>
+  <div class="tab" onclick="showTab('alerts')">🔔 Alerts</div>
 </div>
 
-<!-- SEARCH PAGE -->
+<!-- SEARCH -->
 <div class="page active" id="page-search">
   <div class="hero">
     <div class="hero-eyebrow">Funko Pop value checker</div>
@@ -203,7 +235,7 @@
       <span class="chip" onclick="fillAndSearch('Darth Vader #157')">Darth Vader #157</span>
       <span class="chip" onclick="fillAndSearch('Batman #01')">Batman #01</span>
       <span class="chip" onclick="fillAndSearch('Baby Yoda #368')">Baby Yoda #368</span>
-      <span class="chip" onclick="fillAndSearch('Chase Deadpool #111')">Chase Deadpool #111</span>
+      <span class="chip" onclick="fillAndSearch('Chase Deadpool #111')">Chase Deadpool</span>
       <span class="chip" onclick="fillAndSearch('SDCC Iron Man')">SDCC Iron Man</span>
     </div>
   </div>
@@ -215,44 +247,21 @@
   </div>
 </div>
 
-<!-- COLLECTION PAGE -->
+<!-- COLLECTION -->
 <div class="page" id="page-collection">
   <div class="section">
     <div class="section-title">My Collection</div>
-    <div class="section-sub">Log your Pops and track your total estimated collection value.</div>
-
-    <div class="add-pop-form">
-      <div class="form-row">
-        <input type="text" id="col-name" placeholder="Pop name (e.g. Spider-Man #4)" />
-        <input type="number" id="col-value" placeholder="Est. value £" min="0" step="0.01" style="max-width:130px;" />
-      </div>
-      <div class="form-row">
-        <input type="text" id="col-series" placeholder="Series (e.g. Marvel)" />
-        <input type="text" id="col-number" placeholder="Pop # (e.g. #4)" />
-        <button class="btn btn-primary" onclick="addPop()">+ Add Pop</button>
-      </div>
-    </div>
-
-    <div id="collection-summary" style="display:none;" class="collection-summary">
-      <div class="summary-stat"><div class="summary-val" id="col-count">0</div><div class="summary-label">Pops</div></div>
-      <div class="summary-stat"><div class="summary-val" id="col-total">£0</div><div class="summary-label">Est. total value</div></div>
-      <div class="summary-stat"><div class="summary-val" id="col-avg">£0</div><div class="summary-label">Avg per Pop</div></div>
-    </div>
-
-    <div id="collection-list">
-      <div class="empty-collection">No Pops added yet — add your first one above!</div>
-    </div>
+    <div class="section-sub">Log your Pops and track your total estimated collection value. Saved to your account.</div>
+    <div id="collection-content"></div>
   </div>
 </div>
 
-<!-- SCANNER PAGE -->
+<!-- SCANNER -->
 <div class="page" id="page-scanner">
   <div class="section">
     <div class="section-title">Barcode Scanner</div>
-    <div class="section-sub">Use your camera to scan the barcode on a Funko box. We'll search for its price automatically.</div>
-
+    <div class="section-sub">Use your camera to scan the barcode on a Funko box and search its price automatically.</div>
     <div id="scan-result"></div>
-
     <div class="scanner-wrap">
       <video id="preview" autoplay muted playsinline></video>
       <div class="scanner-status" id="scanner-status">Camera not started — click Start Scanner below.</div>
@@ -261,286 +270,347 @@
         <button class="btn" onclick="stopScanner()">&#9632; Stop</button>
       </div>
     </div>
-
-    <div class="tip-card">
-      <strong>How to scan:</strong> Point your camera at the barcode on the back or side of the Funko box. Hold steady for a moment — it'll detect automatically and open the price search.
-    </div>
+    <div class="tip-card"><strong>Tip:</strong> Point your camera at the barcode on the back or side of the Funko box and hold steady — it detects automatically.</div>
   </div>
 </div>
 
-<!-- ALERTS PAGE -->
+<!-- ALERTS -->
 <div class="page" id="page-alerts">
   <div class="section">
     <div class="section-title">Price Alerts</div>
-    <div class="section-sub">Save a Pop and set a target price. Hit "Check now" to instantly open eBay sold listings and see if it's hit your price.</div>
-
-    <div class="alert-form">
-      <div class="form-row">
-        <input type="text" id="alert-name" placeholder='Pop name (e.g. "Holographic Darth Maul")' />
-      </div>
-      <div class="form-row">
-        <input type="number" id="alert-price" placeholder="Alert me when below £..." min="0" step="0.01" />
-        <button class="btn btn-primary" onclick="addAlert()">+ Add alert</button>
-      </div>
-    </div>
-
-    <div id="alerts-list">
-      <div class="empty-collection">No alerts set — add one above!</div>
-    </div>
+    <div class="section-sub">Save a Pop with a target price. Hit "Check now" to open eBay sold listings and see if it's dropped to your price.</div>
+    <div id="alerts-content"></div>
   </div>
 </div>
 
-<footer>FunkoPopPriceSearcher &mdash; links open official third-party marketplaces &mdash; prices vary by condition and market demand</footer>
+<footer>FunkoPopPriceSearcher &mdash; links open official third-party marketplaces &mdash; prices vary by condition and demand</footer>
 
-<!-- QUAGGA BARCODE SCANNER -->
+<!-- FIREBASE -->
+<script type="module">
+  import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+  import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, GoogleAuthProvider, signInWithPopup } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
+  import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, query, where } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyBkSNh_oghFz9G5Oy5dEMnltPu2ZUJDpfs",
+    authDomain: "funkopoppricesearcher.firebaseapp.com",
+    projectId: "funkopoppricesearcher",
+    storageBucket: "funkopoppricesearcher.firebasestorage.app",
+    messagingSenderId: "593849962372",
+    appId: "1:593849962372:web:2a144cef08ae27bbc7d7d1",
+    measurementId: "G-6HW5BSZ5RN"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+  const googleProvider = new GoogleAuthProvider();
+
+  let currentUser = null;
+
+  // Auth state
+  onAuthStateChanged(auth, user => {
+    currentUser = user;
+    const emailEl = document.getElementById('nav-user-email');
+    const btnEl   = document.getElementById('auth-nav-btn');
+    if (user) {
+      emailEl.textContent = user.displayName || user.email;
+      emailEl.style.display = 'block';
+      btnEl.textContent = 'Sign out';
+      btnEl.onclick = () => { signOut(auth); };
+    } else {
+      emailEl.style.display = 'none';
+      btnEl.textContent = 'Sign in';
+      btnEl.onclick = openModal;
+    }
+    renderCollectionPage();
+    renderAlertsPage();
+  });
+
+  // Expose auth functions globally
+  window._firebaseSignIn = async (email, password) => {
+    await signInWithEmailAndPassword(auth, email, password);
+  };
+  window._firebaseRegister = async (email, password) => {
+    await createUserWithEmailAndPassword(auth, email, password);
+  };
+  window._firebaseGoogleSignIn = async () => {
+    await signInWithPopup(auth, googleProvider);
+  };
+
+  // Collection CRUD
+  window.addPopToFirestore = async (pop) => {
+    if (!currentUser) return;
+    await addDoc(collection(db, 'collections', currentUser.uid, 'pops'), pop);
+    renderCollectionPage();
+  };
+  window.deletePopFromFirestore = async (id) => {
+    if (!currentUser) return;
+    await deleteDoc(doc(db, 'collections', currentUser.uid, 'pops', id));
+    renderCollectionPage();
+  };
+  window.getCollectionFromFirestore = async () => {
+    if (!currentUser) return [];
+    const snap = await getDocs(collection(db, 'collections', currentUser.uid, 'pops'));
+    return snap.docs.map(d => ({ id: d.id, ...d.data() }));
+  };
+
+  // Alerts CRUD
+  window.addAlertToFirestore = async (alert) => {
+    if (!currentUser) return;
+    await addDoc(collection(db, 'alerts', currentUser.uid, 'items'), alert);
+    renderAlertsPage();
+  };
+  window.deleteAlertFromFirestore = async (id) => {
+    if (!currentUser) return;
+    await deleteDoc(doc(db, 'alerts', currentUser.uid, 'items', id));
+    renderAlertsPage();
+  };
+  window.getAlertsFromFirestore = async () => {
+    if (!currentUser) return [];
+    const snap = await getDocs(collection(db, 'alerts', currentUser.uid, 'items'));
+    return snap.docs.map(d => ({ id: d.id, ...d.data() }));
+  };
+
+  window._currentUser = () => currentUser;
+
+  // Render collection page
+  async function renderCollectionPage() {
+    const el = document.getElementById('collection-content');
+    if (!currentUser) {
+      el.innerHTML = `<div class="login-prompt"><p>Sign in to save and sync your collection across all devices.</p><button class="btn btn-primary" onclick="openModal()">Sign in / Create account</button></div>`;
+      return;
+    }
+    const pops = await window.getCollectionFromFirestore();
+    if (!pops.length) {
+      el.innerHTML = `
+        <div class="add-pop-form">
+          <div class="form-row"><input type="text" id="col-name" placeholder="Pop name (e.g. Spider-Man #4)" /><input type="number" id="col-value" placeholder="Est. value £" min="0" step="0.01" style="max-width:130px;" /></div>
+          <div class="form-row"><input type="text" id="col-series" placeholder="Series (e.g. Marvel)" /><input type="text" id="col-number" placeholder="Pop # (e.g. #4)" /><button class="btn btn-primary" onclick="addPop()">+ Add Pop</button></div>
+        </div>
+        <div class="empty-collection">No Pops added yet — add your first one above!</div>`;
+      return;
+    }
+    const total = pops.reduce((s, p) => s + (parseFloat(p.value) || 0), 0);
+    const avg   = total / pops.length;
+    const emojis = ['&#9679;','&#11044;','&#9733;','&#9670;','&#9632;'];
+    el.innerHTML = `
+      <div class="add-pop-form">
+        <div class="form-row"><input type="text" id="col-name" placeholder="Pop name (e.g. Spider-Man #4)" /><input type="number" id="col-value" placeholder="Est. value £" min="0" step="0.01" style="max-width:130px;" /></div>
+        <div class="form-row"><input type="text" id="col-series" placeholder="Series (e.g. Marvel)" /><input type="text" id="col-number" placeholder="Pop # (e.g. #4)" /><button class="btn btn-primary" onclick="addPop()">+ Add Pop</button></div>
+      </div>
+      <div class="collection-summary">
+        <div class="summary-stat"><div class="summary-val">${pops.length}</div><div class="summary-label">Pops</div></div>
+        <div class="summary-stat"><div class="summary-val">£${total.toFixed(2)}</div><div class="summary-label">Est. total value</div></div>
+        <div class="summary-stat"><div class="summary-val">£${avg.toFixed(2)}</div><div class="summary-label">Avg per Pop</div></div>
+      </div>
+      <div class="collection-grid">
+        ${pops.map((p, i) => `
+          <div class="pop-item">
+            <div class="pop-avatar">${emojis[i % emojis.length]}</div>
+            <div class="pop-info">
+              <div class="pop-name">${p.name}</div>
+              <div class="pop-meta">${[p.series, p.number].filter(Boolean).join(' · ') || 'No series/number'}</div>
+            </div>
+            <div class="pop-value">${p.value ? '£' + parseFloat(p.value).toFixed(2) : '—'}</div>
+            <div class="pop-actions">
+              <button class="icon-btn" title="Search price" onclick="fillAndSearch('${p.name.replace(/'/g,"\\'")}');showTab('search');">🔍</button>
+              <button class="icon-btn" title="Delete" onclick="deletePopFromFirestore('${p.id}')">🗑</button>
+            </div>
+          </div>`).join('')}
+      </div>`;
+  }
+
+  async function renderAlertsPage() {
+    const el = document.getElementById('alerts-content');
+    if (!currentUser) {
+      el.innerHTML = `<div class="login-prompt"><p>Sign in to save price alerts across all your devices.</p><button class="btn btn-primary" onclick="openModal()">Sign in / Create account</button></div>`;
+      return;
+    }
+    const alerts = await window.getAlertsFromFirestore();
+    el.innerHTML = `
+      <div class="alert-form">
+        <div class="form-row"><input type="text" id="alert-name" placeholder='Pop name (e.g. "Holographic Darth Maul")' /></div>
+        <div class="form-row"><input type="number" id="alert-price" placeholder="Alert when below £..." min="0" step="0.01" /><button class="btn btn-primary" onclick="addAlert()">+ Add alert</button></div>
+      </div>
+      ${!alerts.length ? '<div class="empty-collection">No alerts set — add one above!</div>' :
+        alerts.map(a => `
+          <div class="alert-item">
+            <div style="font-size:20px;">🔔</div>
+            <div class="alert-info">
+              <div class="alert-name">${a.name}</div>
+              <div class="alert-threshold">${a.price ? 'Alert when below £' + parseFloat(a.price).toFixed(2) : 'No price target'}</div>
+            </div>
+            <a class="btn btn-primary btn-sm" href="https://www.ebay.co.uk/sch/i.html?_nkw=${encodeURIComponent(a.name + ' funko pop')}&LH_Sold=1&LH_Complete=1&_sop=13" target="_blank" rel="noopener">Check now →</a>
+            <button class="icon-btn" onclick="deleteAlertFromFirestore('${a.id}')">🗑</button>
+          </div>`).join('')}`;
+  }
+
+  window.renderCollectionPage = renderCollectionPage;
+  window.renderAlertsPage = renderAlertsPage;
+</script>
+
+<!-- QUAGGA SCANNER -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/quagga/0.12.1/quagga.min.js"></script>
 
 <script>
-// ─── DARK MODE ───────────────────────────────────────────────────
-function toggleDark() {
-  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-  document.documentElement.setAttribute('data-theme', isDark ? 'light' : 'dark');
-  document.getElementById('darkBtn').textContent = isDark ? '🌙 Dark mode' : '☀️ Light mode';
-  localStorage.setItem('theme', isDark ? 'light' : 'dark');
-}
-(function() {
-  const t = localStorage.getItem('theme') || 'light';
-  document.documentElement.setAttribute('data-theme', t);
-  window.addEventListener('DOMContentLoaded', () => {
-    document.getElementById('darkBtn').textContent = t === 'dark' ? '☀️ Light mode' : '🌙 Dark mode';
-  });
-})();
-
-// ─── TABS ────────────────────────────────────────────────────────
-function showTab(name) {
-  document.querySelectorAll('.tab').forEach((t,i) => t.classList.remove('active'));
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  const tabs = ['search','collection','scanner','alerts'];
-  document.querySelectorAll('.tab')[tabs.indexOf(name)].classList.add('active');
-  document.getElementById('page-' + name).classList.add('active');
-  if (name !== 'scanner') stopScanner();
-}
-
-// ─── SEARCH ──────────────────────────────────────────────────────
-function enc(s)  { return encodeURIComponent(s + ' funko pop'); }
-function encQ(s) { return encodeURIComponent(s); }
-
-function fillAndSearch(val) {
-  document.getElementById('query').value = val;
-  doSearch();
-}
-
-function doSearch() {
-  const raw = document.getElementById('query').value.trim();
-  if (!raw) return;
-  const ebayUrl       = 'https://www.ebay.co.uk/sch/i.html?_nkw=' + enc(raw) + '&LH_Sold=1&LH_Complete=1&_sop=13';
-  const ebayActiveUrl = 'https://www.ebay.co.uk/sch/i.html?_nkw=' + enc(raw) + '&_sop=15';
-  const ppgUrl        = 'https://www.poppriceguide.com/?q=' + encQ(raw);
-  const pcUrl         = 'https://www.pricecharting.com/search-products?q=' + encQ(raw) + '+funko&type=prices';
-  const whatnotUrl    = 'https://www.whatnot.com/search?query=' + enc(raw);
-
-  document.getElementById('results').innerHTML = `
-    <div class="result-card">
-      <div class="card-head"><span class="card-site">eBay sold listings</span><span class="badge badge-accent">Most accurate</span></div>
-      <div class="card-body">Shows what people have <strong>actually paid</strong> recently — filtered to completed sales, newest first.</div>
-      <div class="card-foot">
-        <a class="btn btn-primary" href="${ebayUrl}" target="_blank" rel="noopener">View sold listings &rarr;</a>
-        <a class="btn" href="${ebayActiveUrl}" target="_blank" rel="noopener">Active listings &rarr;</a>
-        <button class="btn btn-sm" onclick="quickAddFromSearch('${raw.replace(/'/g,"\\'")}')">+ Save to collection</button>
-      </div>
-    </div>
-    <div class="result-card">
-      <div class="card-head"><span class="card-site">Pop Price Guide</span><span class="badge badge-success">Best database</span></div>
-      <div class="card-body">The largest Funko database — estimated value, price history charts, vaulted & exclusive status.</div>
-      <div class="card-foot"><a class="btn btn-primary" href="${ppgUrl}" target="_blank" rel="noopener">Search Pop Price Guide &rarr;</a></div>
-    </div>
-    <div class="result-card">
-      <div class="card-head"><span class="card-site">PriceCharting</span><span class="badge badge-warning">Graded &amp; loose</span></div>
-      <div class="card-body">Breaks down prices by condition — mint in box, near mint, and loose (out of box).</div>
-      <div class="card-foot"><a class="btn btn-primary" href="${pcUrl}" target="_blank" rel="noopener">Search PriceCharting &rarr;</a></div>
-    </div>
-    <div class="result-card">
-      <div class="card-head"><span class="card-site">Whatnot</span><span class="badge badge-info">Live auctions</span></div>
-      <div class="card-body">Live auction platform — see real-time demand and what buyers are currently bidding.</div>
-      <div class="card-foot">
-        <a class="btn btn-primary" href="${whatnotUrl}" target="_blank" rel="noopener">Search Whatnot &rarr;</a>
-        <button class="btn btn-sm" onclick="quickAlert('${raw.replace(/'/g,"\\'")}')">🔔 Set price alert</button>
-      </div>
-    </div>
-    <div class="tip-card"><strong>Reading eBay:</strong> Look at the 5–10 most recent sales and ignore outliers. The middle cluster is your real market value.</div>
-  `;
-}
-
-document.getElementById('query').addEventListener('keydown', e => { if (e.key === 'Enter') doSearch(); });
-
-// ─── COLLECTION ──────────────────────────────────────────────────
-function getCollection() { return JSON.parse(localStorage.getItem('funko_collection') || '[]'); }
-function saveCollection(c) { localStorage.setItem('funko_collection', JSON.stringify(c)); }
-
-function addPop() {
-  const name   = document.getElementById('col-name').value.trim();
-  const value  = parseFloat(document.getElementById('col-value').value) || 0;
-  const series = document.getElementById('col-series').value.trim();
-  const number = document.getElementById('col-number').value.trim();
-  if (!name) { alert('Please enter a Pop name.'); return; }
-  const col = getCollection();
-  col.push({ id: Date.now(), name, value, series, number });
-  saveCollection(col);
-  document.getElementById('col-name').value = '';
-  document.getElementById('col-value').value = '';
-  document.getElementById('col-series').value = '';
-  document.getElementById('col-number').value = '';
-  renderCollection();
-}
-
-function quickAddFromSearch(name) {
-  showTab('collection');
-  document.getElementById('col-name').value = name;
-  document.getElementById('col-name').focus();
-}
-
-function deletePop(id) {
-  const col = getCollection().filter(p => p.id !== id);
-  saveCollection(col);
-  renderCollection();
-}
-
-function renderCollection() {
-  const col = getCollection();
-  const list = document.getElementById('collection-list');
-  const summary = document.getElementById('collection-summary');
-  if (!col.length) {
-    list.innerHTML = '<div class="empty-collection">No Pops added yet — add your first one above!</div>';
-    summary.style.display = 'none';
-    return;
+  // DARK MODE
+  function toggleDark() {
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    document.documentElement.setAttribute('data-theme', isDark ? 'light' : 'dark');
+    document.getElementById('darkBtn').textContent = isDark ? '🌙 Dark' : '☀️ Light';
+    localStorage.setItem('theme', isDark ? 'light' : 'dark');
   }
-  const total = col.reduce((s, p) => s + (p.value || 0), 0);
-  const avg   = total / col.length;
-  document.getElementById('col-count').textContent = col.length;
-  document.getElementById('col-total').textContent = '£' + total.toFixed(2);
-  document.getElementById('col-avg').textContent   = '£' + avg.toFixed(2);
-  summary.style.display = 'flex';
+  (function() {
+    const t = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', t);
+    window.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('darkBtn').textContent = t === 'dark' ? '☀️ Light' : '🌙 Dark';
+    });
+  })();
 
-  const emojis = ['&#9679;','&#11044;','&#9733;','&#9670;','&#9632;'];
-  list.innerHTML = col.map((p, i) => `
-    <div class="pop-item">
-      <div class="pop-avatar">${emojis[i % emojis.length]}</div>
-      <div class="pop-info">
-        <div class="pop-name">${p.name}</div>
-        <div class="pop-meta">${[p.series, p.number].filter(Boolean).join(' &middot; ') || 'No series/number'}</div>
-      </div>
-      <div class="pop-value">${p.value ? '£' + p.value.toFixed(2) : '—'}</div>
-      <div class="pop-actions">
-        <button class="icon-btn" title="Search price" onclick="fillAndSearch('${p.name.replace(/'/g,"\\'")}');showTab('search');">🔍</button>
-        <button class="icon-btn" title="Delete" onclick="deletePop(${p.id})">🗑</button>
-      </div>
-    </div>
-  `).join('');
-}
+  // TABS
+  function showTab(name) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    const tabs = ['search','collection','scanner','alerts'];
+    document.querySelectorAll('.tab')[tabs.indexOf(name)].classList.add('active');
+    document.getElementById('page-' + name).classList.add('active');
+    if (name !== 'scanner') stopScanner();
+  }
 
-// ─── BARCODE SCANNER ─────────────────────────────────────────────
-let scannerRunning = false;
-let lastScan = '';
-
-function startScanner() {
-  const status = document.getElementById('scanner-status');
-  status.textContent = 'Starting camera...';
-  if (!Quagga) { status.textContent = 'Scanner library not loaded.'; return; }
-
-  Quagga.init({
-    inputStream: {
-      name: 'Live',
-      type: 'LiveStream',
-      target: document.getElementById('preview'),
-      constraints: { facingMode: 'environment' }
-    },
-    decoder: {
-      readers: ['ean_reader', 'upc_reader', 'upc_e_reader', 'code_128_reader']
+  // AUTH MODAL
+  let authMode = 'login';
+  function openModal() { document.getElementById('authModal').classList.remove('hidden'); }
+  function closeModal() { document.getElementById('authModal').classList.add('hidden'); document.getElementById('auth-error').textContent = ''; }
+  function switchAuthTab(mode) {
+    authMode = mode;
+    document.querySelectorAll('.modal-tab').forEach((t,i) => t.classList.toggle('active', (mode==='login'&&i===0)||(mode==='register'&&i===1)));
+    document.getElementById('auth-submit-btn').textContent = mode === 'login' ? 'Sign in' : 'Create account';
+    document.getElementById('auth-error').textContent = '';
+  }
+  async function submitAuth() {
+    const email    = document.getElementById('auth-email').value.trim();
+    const password = document.getElementById('auth-password').value;
+    const errEl    = document.getElementById('auth-error');
+    errEl.textContent = '';
+    try {
+      if (authMode === 'login') await window._firebaseSignIn(email, password);
+      else await window._firebaseRegister(email, password);
+      closeModal();
+    } catch(e) {
+      errEl.textContent = e.message.replace('Firebase: ', '').replace(/\(auth\/.*\)\.?/, '').trim();
     }
-  }, function(err) {
-    if (err) {
-      status.textContent = 'Camera error: ' + err.message + '. Make sure you allow camera access.';
-      return;
-    }
-    Quagga.start();
-    scannerRunning = true;
-    status.textContent = 'Scanner active — point at a Funko barcode...';
-  });
-
-  Quagga.onDetected(function(result) {
-    const code = result.codeResult.code;
-    if (code === lastScan) return;
-    lastScan = code;
-    const res = document.getElementById('scan-result');
-    res.style.display = 'block';
-    res.innerHTML = `<strong>Barcode detected:</strong> ${code} &mdash; <a href="https://www.ebay.co.uk/sch/i.html?_nkw=${encodeURIComponent(code + ' funko pop')}&LH_Sold=1&LH_Complete=1" target="_blank" style="color:var(--success);">Search eBay sold &rarr;</a> &nbsp; <a href="https://www.poppriceguide.com/?q=${encodeURIComponent(code)}" target="_blank" style="color:var(--success);">Pop Price Guide &rarr;</a>`;
-    status.textContent = 'Detected! Scan another or stop the scanner.';
-    setTimeout(() => { lastScan = ''; }, 3000);
-  });
-}
-
-function stopScanner() {
-  if (scannerRunning) {
-    try { Quagga.stop(); } catch(e) {}
-    scannerRunning = false;
-    document.getElementById('scanner-status').textContent = 'Scanner stopped.';
   }
-}
-
-// ─── PRICE ALERTS ────────────────────────────────────────────────
-function getAlerts() { return JSON.parse(localStorage.getItem('funko_alerts') || '[]'); }
-function saveAlerts(a) { localStorage.setItem('funko_alerts', JSON.stringify(a)); }
-
-function addAlert() {
-  const name  = document.getElementById('alert-name').value.trim();
-  const price = parseFloat(document.getElementById('alert-price').value) || 0;
-  if (!name) { alert('Please enter a Pop name.'); return; }
-  const alerts = getAlerts();
-  alerts.push({ id: Date.now(), name, price });
-  saveAlerts(alerts);
-  document.getElementById('alert-name').value  = '';
-  document.getElementById('alert-price').value = '';
-  renderAlerts();
-}
-
-function quickAlert(name) {
-  showTab('alerts');
-  document.getElementById('alert-name').value = name;
-  document.getElementById('alert-price').focus();
-}
-
-function deleteAlert(id) {
-  saveAlerts(getAlerts().filter(a => a.id !== id));
-  renderAlerts();
-}
-
-function checkAlert(name) {
-  window.open('https://www.ebay.co.uk/sch/i.html?_nkw=' + encodeURIComponent(name + ' funko pop') + '&LH_Sold=1&LH_Complete=1&_sop=13', '_blank');
-}
-
-function renderAlerts() {
-  const alerts = getAlerts();
-  const list   = document.getElementById('alerts-list');
-  if (!alerts.length) {
-    list.innerHTML = '<div class="empty-collection">No alerts set — add one above!</div>';
-    return;
+  async function signInGoogle() {
+    try { await window._firebaseGoogleSignIn(); closeModal(); }
+    catch(e) { document.getElementById('auth-error').textContent = e.message; }
   }
-  list.innerHTML = alerts.map(a => `
-    <div class="alert-item">
-      <div style="font-size:20px;">🔔</div>
-      <div class="alert-info">
-        <div class="alert-name">${a.name}</div>
-        <div class="alert-threshold">${a.price ? 'Alert when below £' + a.price.toFixed(2) : 'No price target set'}</div>
+  document.getElementById('authModal').addEventListener('click', e => { if (e.target === document.getElementById('authModal')) closeModal(); });
+
+  // SEARCH
+  function enc(s)  { return encodeURIComponent(s + ' funko pop'); }
+  function encQ(s) { return encodeURIComponent(s); }
+
+  function fillAndSearch(val) { document.getElementById('query').value = val; doSearch(); }
+
+  function doSearch() {
+    const raw = document.getElementById('query').value.trim();
+    if (!raw) return;
+    const ebayUrl       = 'https://www.ebay.co.uk/sch/i.html?_nkw=' + enc(raw) + '&LH_Sold=1&LH_Complete=1&_sop=13';
+    const ebayActiveUrl = 'https://www.ebay.co.uk/sch/i.html?_nkw=' + enc(raw) + '&_sop=15';
+    const ppgUrl        = 'https://www.poppriceguide.com/?q=' + encQ(raw);
+    const pcUrl         = 'https://www.pricecharting.com/search-products?q=' + encQ(raw) + '+funko&type=prices';
+    const whatnotUrl    = 'https://www.whatnot.com/search?query=' + enc(raw);
+    document.getElementById('results').innerHTML = `
+      <div class="result-card">
+        <div class="card-head"><span class="card-site">eBay sold listings</span><span class="badge badge-accent">Most accurate</span></div>
+        <div class="card-body">Shows what people have <strong>actually paid</strong> recently — filtered to completed sales, newest first.</div>
+        <div class="card-foot">
+          <a class="btn btn-primary" href="${ebayUrl}" target="_blank" rel="noopener">View sold listings →</a>
+          <a class="btn" href="${ebayActiveUrl}" target="_blank" rel="noopener">Active listings →</a>
+          <button class="btn btn-sm" onclick="quickAddPop('${raw.replace(/'/g,"\\'")}')">+ Save to collection</button>
+        </div>
       </div>
-      <button class="btn btn-primary btn-sm alert-check-btn" onclick="checkAlert('${a.name.replace(/'/g,"\\'")}')">Check now &rarr;</button>
-      <button class="icon-btn" onclick="deleteAlert(${a.id})">🗑</button>
-    </div>
-  `).join('');
-}
+      <div class="result-card">
+        <div class="card-head"><span class="card-site">Pop Price Guide</span><span class="badge badge-success">Best database</span></div>
+        <div class="card-body">The largest Funko database — estimated value, price history charts, vaulted and exclusive status.</div>
+        <div class="card-foot"><a class="btn btn-primary" href="${ppgUrl}" target="_blank" rel="noopener">Search Pop Price Guide →</a></div>
+      </div>
+      <div class="result-card">
+        <div class="card-head"><span class="card-site">PriceCharting</span><span class="badge badge-warning">Graded &amp; loose</span></div>
+        <div class="card-body">Breaks down prices by condition — mint in box, near mint, and loose (out of box).</div>
+        <div class="card-foot"><a class="btn btn-primary" href="${pcUrl}" target="_blank" rel="noopener">Search PriceCharting →</a></div>
+      </div>
+      <div class="result-card">
+        <div class="card-head"><span class="card-site">Whatnot</span><span class="badge badge-info">Live auctions</span></div>
+        <div class="card-body">Live auction platform — see real-time demand and what buyers are currently bidding.</div>
+        <div class="card-foot">
+          <a class="btn btn-primary" href="${whatnotUrl}" target="_blank" rel="noopener">Search Whatnot →</a>
+          <button class="btn btn-sm" onclick="quickAddAlert('${raw.replace(/'/g,"\\'")}')">🔔 Set alert</button>
+        </div>
+      </div>
+      <div class="tip-card"><strong>Reading eBay:</strong> Look at the 5–10 most recent sales and ignore outliers. The middle cluster is your real market value.</div>`;
+  }
+  document.getElementById('query').addEventListener('keydown', e => { if (e.key === 'Enter') doSearch(); });
 
-// ─── INIT ────────────────────────────────────────────────────────
-renderCollection();
-renderAlerts();
+  // COLLECTION
+  function quickAddPop(name) {
+    if (!window._currentUser || !window._currentUser()) { openModal(); return; }
+    showTab('collection');
+    setTimeout(() => { const el = document.getElementById('col-name'); if (el) { el.value = name; el.focus(); } }, 100);
+  }
+  async function addPop() {
+    if (!window._currentUser || !window._currentUser()) { openModal(); return; }
+    const name   = document.getElementById('col-name').value.trim();
+    const value  = document.getElementById('col-value').value;
+    const series = document.getElementById('col-series').value.trim();
+    const number = document.getElementById('col-number').value.trim();
+    if (!name) { alert('Please enter a Pop name.'); return; }
+    await window.addPopToFirestore({ name, value: parseFloat(value) || 0, series, number, added: Date.now() });
+  }
+
+  // ALERTS
+  function quickAddAlert(name) {
+    if (!window._currentUser || !window._currentUser()) { openModal(); return; }
+    showTab('alerts');
+    setTimeout(() => { const el = document.getElementById('alert-name'); if (el) { el.value = name; el.focus(); } }, 100);
+  }
+  async function addAlert() {
+    if (!window._currentUser || !window._currentUser()) { openModal(); return; }
+    const name  = document.getElementById('alert-name').value.trim();
+    const price = document.getElementById('alert-price').value;
+    if (!name) { alert('Please enter a Pop name.'); return; }
+    await window.addAlertToFirestore({ name, price: parseFloat(price) || 0, added: Date.now() });
+  }
+
+  // SCANNER
+  let scannerRunning = false, lastScan = '';
+  function startScanner() {
+    const status = document.getElementById('scanner-status');
+    status.textContent = 'Starting camera...';
+    Quagga.init({
+      inputStream: { name: 'Live', type: 'LiveStream', target: document.getElementById('preview'), constraints: { facingMode: 'environment' } },
+      decoder: { readers: ['ean_reader','upc_reader','upc_e_reader','code_128_reader'] }
+    }, err => {
+      if (err) { status.textContent = 'Camera error: ' + err.message; return; }
+      Quagga.start(); scannerRunning = true;
+      status.textContent = 'Scanner active — point at a Funko barcode...';
+    });
+    Quagga.onDetected(result => {
+      const code = result.codeResult.code;
+      if (code === lastScan) return;
+      lastScan = code;
+      const res = document.getElementById('scan-result');
+      res.style.display = 'block';
+      res.innerHTML = `<strong>Barcode detected:</strong> ${code} — <a href="https://www.ebay.co.uk/sch/i.html?_nkw=${encodeURIComponent(code + ' funko pop')}&LH_Sold=1&LH_Complete=1" target="_blank" style="color:var(--success);">eBay sold →</a> &nbsp; <a href="https://www.poppriceguide.com/?q=${encodeURIComponent(code)}" target="_blank" style="color:var(--success);">Pop Price Guide →</a>`;
+      document.getElementById('scanner-status').textContent = 'Detected! Scan another or stop.';
+      setTimeout(() => { lastScan = ''; }, 3000);
+    });
+  }
+  function stopScanner() {
+    if (scannerRunning) { try { Quagga.stop(); } catch(e) {} scannerRunning = false; document.getElementById('scanner-status').textContent = 'Scanner stopped.'; }
+  }
 </script>
 </body>
 </html>
