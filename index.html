@@ -613,10 +613,11 @@ footer { text-align: center; padding: 2rem; font-size: 12px; color: var(--hint);
       const ZXing = window.ZXing || window['@zxing/library'];
       codeReader = new ZXing.BrowserMultiFormatReader();
 
-      const devices = await ZXing.BrowserMultiFormatReader.listVideoInputDevices();
-      // prefer back camera on mobile
-      const device = devices.find(d => /back|rear|environment/i.test(d.label)) || devices[devices.length - 1];
-      const deviceId = device ? device.deviceId : undefined;
+      // Use navigator.mediaDevices directly to find back camera
+      const devices = await navigator.mediaDevices.enumerateDevices();
+      const videoDevices = devices.filter(d => d.kind === 'videoinput');
+      const backCamera = videoDevices.find(d => /back|rear|environment/i.test(d.label));
+      const deviceId = backCamera ? backCamera.deviceId : (videoDevices.length ? videoDevices[videoDevices.length - 1].deviceId : undefined);
 
       status.textContent = 'Scanner active — point at a Funko barcode...';
       scannerRunning = true;
