@@ -272,14 +272,15 @@ footer { text-align: center; padding: 2rem; font-size: 12px; color: var(--hint);
     <div class="section-sub">Use your camera to scan the barcode on a Funko box and search its price automatically.</div>
     <div id="scan-result"></div>
     <div class="scanner-wrap">
-      <video id="preview" autoplay muted playsinline></video>
+      <video id="preview" autoplay muted playsinline style="width:100%;max-height:300px;object-fit:cover;display:block;background:#000;"></video>
+      <canvas id="scan-canvas" style="display:none;"></canvas>
       <div class="scanner-status" id="scanner-status">Camera not started — click Start Scanner below.</div>
       <div class="scanner-controls">
         <button class="btn btn-primary" onclick="startScanner()">▶ Start scanner</button>
         <button class="btn" onclick="stopScanner()">&#9632; Stop</button>
       </div>
     </div>
-    <div class="tip-card"><strong>Tip:</strong> Point your camera at the barcode on the back or side of the Funko box and hold steady — it detects automatically.</div>
+    <div class="tip-card"><strong>Tip:</strong> Point your camera at the barcode on the back or bottom of the Funko box and hold steady for a moment — works best in good lighting.</div>
   </div>
 </div>
 
@@ -462,9 +463,9 @@ footer { text-align: center; padding: 2rem; font-size: 12px; color: var(--hint);
   window.renderAlertsPage = renderAlertsPage;
 </script>
 
-<!-- QUAGGA SCANNER -->
+<!-- ZXING BARCODE SCANNER -->
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/quagga/0.12.1/quagga.min.js"></script>
+<script src="https://unpkg.com/@zxing/library@latest/umd/index.min.js"></script>
 
 <script>
   // DARK MODE
@@ -597,32 +598,52 @@ footer { text-align: center; padding: 2rem; font-size: 12px; color: var(--hint);
     await window.addAlertToFirestore({ name, price: parseFloat(price) || 0, added: Date.now() });
   }
 
-  // SCANNER
-  let scannerRunning = false, lastScan = '';
-  function startScanner() {
+  // SCANNER — ZXing
+  let codeReader = null;
+  let scannerRunning = false;
+
+  async function startScanner() {
     const status = document.getElementById('scanner-status');
+    const video  = document.getElementById('preview');
+    const resEl  = document.getElementById('scan-result');
+    resEl.style.display = 'none';
     status.textContent = 'Starting camera...';
-    Quagga.init({
-      inputStream: { name: 'Live', type: 'LiveStream', target: document.getElementById('preview'), constraints: { facingMode: 'environment' } },
-      decoder: { readers: ['ean_reader','upc_reader','upc_e_reader','code_128_reader'] }
-    }, err => {
-      if (err) { status.textContent = 'Camera error: ' + err.message; return; }
-      Quagga.start(); scannerRunning = true;
+
+    try {
+      const ZXing = window.ZXing || window['@zxing/library'];
+      codeReader = new ZXing.BrowserMultiFormatReader();
+
+      const devices = await ZXing.BrowserMultiFormatReader.listVideoInputDevices();
+      // prefer back camera on mobile
+      const device = devices.find(d => /back|rear|environment/i.test(d.label)) || devices[devices.length - 1];
+      const deviceId = device ? device.deviceId : undefined;
+
       status.textContent = 'Scanner active — point at a Funko barcode...';
-    });
-    Quagga.onDetected(result => {
-      const code = result.codeResult.code;
-      if (code === lastScan) return;
-      lastScan = code;
-      const res = document.getElementById('scan-result');
-      res.style.display = 'block';
-      res.innerHTML = `<strong>Barcode detected:</strong> ${code} — <a href="https://www.ebay.co.uk/sch/i.html?_nkw=${encodeURIComponent(code + ' funko pop')}&LH_Sold=1&LH_Complete=1" target="_blank" style="color:var(--success);">eBay sold →</a> &nbsp; <a href="https://www.poppriceguide.com/?q=${encodeURIComponent(code)}" target="_blank" style="color:var(--success);">Pop Price Guide →</a>`;
-      document.getElementById('scanner-status').textContent = 'Detected! Scan another or stop.';
-      setTimeout(() => { lastScan = ''; }, 3000);
-    });
+      scannerRunning = true;
+
+      await codeReader.decodeFromVideoDevice(deviceId, video, (result, err) => {
+        if (result) {
+          const code = result.getText();
+          resEl.style.display = 'block';
+          resEl.innerHTML = `<strong>✓ Barcode detected:</strong> ${code} &nbsp;&mdash;&nbsp;
+            <a href="https://www.ebay.co.uk/sch/i.html?_nkw=${encodeURIComponent(code + ' funko pop')}&LH_Sold=1&LH_Complete=1" target="_blank" style="color:var(--success);font-weight:500;">eBay sold →</a>
+            &nbsp;
+            <a href="https://www.poppriceguide.com/?q=${encodeURIComponent(code)}" target="_blank" style="color:var(--success);font-weight:500;">Pop Price Guide →</a>`;
+          status.textContent = 'Got it! Scan another or hit Stop.';
+        }
+      });
+    } catch(e) {
+      status.textContent = 'Camera error: ' + (e.message || 'Could not access camera. Make sure you allowed permission.');
+      scannerRunning = false;
+    }
   }
+
   function stopScanner() {
-    if (scannerRunning) { try { Quagga.stop(); } catch(e) {} scannerRunning = false; document.getElementById('scanner-status').textContent = 'Scanner stopped.'; }
+    if (codeReader) { try { codeReader.reset(); } catch(e) {} codeReader = null; }
+    scannerRunning = false;
+    const video = document.getElementById('preview');
+    if (video && video.srcObject) { video.srcObject.getTracks().forEach(t => t.stop()); video.srcObject = null; }
+    document.getElementById('scanner-status').textContent = 'Scanner stopped.';
   }
 </script>
 
